@@ -16,10 +16,30 @@ LIST_URL = "https://floorplans.mit.edu/ListPDF.Asp?Bldg="
 SCRIPT_LOCATION = os.path.abspath('')
 DATA_FOLDER = os.path.join(SCRIPT_LOCATION, 'data/')
 
+class AnyEC:
+    """ Use with WebDriverWait to combine expected_conditions
+        in an OR.
+    """
+    def __init__(self, *args):
+        self.ecs = args
+    def __call__(self, driver):
+        for fn in self.ecs:
+            try:
+                result = fn(driver)
+                if result:
+                    return result
+            except:
+                pass
+        return False
 
-def login_to_floorplan_page(driver):
+def login_to_page(driver, page, wait_until):
     wait = WebDriverWait(driver, 10)
-    driver.get(SEARCH_URL)
+    driver.get(page)
+    
+    wait.until(AnyEC(wait_until, EC.element_to_be_clickable((By.ID, "Select"))))
+    
+    if driver.current_url == page:
+        return
     
     # Click login continue button when it appears
     wait.until(EC.element_to_be_clickable((By.ID, "Select"))).click()
@@ -45,7 +65,7 @@ def login_to_floorplan_page(driver):
     passcode_button.click()
     
     # Wait until logged in
-    wait.until(EC.visibility_of_element_located((By.NAME, "Bldg")))
+    wait.until(wait_until)
 
 def get_building_list(driver):
     building_select = driver.find_element_by_name("Bldg")
@@ -96,11 +116,10 @@ def fetch_floorplans():
         })  
     
     driver = webdriver.Chrome(options=chrome_options)  
-    login_to_floorplan_page(driver)
+    login_to_page(driver, SEARCH_URL, EC.visibility_of_element_located((By.NAME, "Bldg")))
     download_all_floorplans(driver)
     reorganize_floorplans()
     driver.quit()
-    
 
 if __name__ == "__main__":
     fetch_floorplans()
