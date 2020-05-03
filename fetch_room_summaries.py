@@ -49,7 +49,7 @@ def download_texts(driver):
             continue
         
         text_tag = driver.find_element_by_tag_name("pre")
-        text = text_tag.text
+        text = text_tag.text.strip()
         
         with open(os.path.join(DATA_FOLDER, building_name + '.txt'), 'w+') as f:
             f.write(text)
