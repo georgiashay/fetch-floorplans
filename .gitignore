@@ -1,3 +1,5 @@
 data*/
 chromedriver
-rooms/
+rooms*/
+__pycache__/
+.ipynb_checkpoints/

@@ -44,6 +44,7 @@ def login_to_page(driver, page, wait_until):
 
     # Jump into iframe for entering passcode
     wait.until(EC.frame_to_be_available_and_switch_to_it((By.ID, 'duo_iframe')))
+    wait.until(EC.element_to_be_clickable((By.ID, "passcode")))
     
     # Choose passcode duo authentication method
     passcode_button = driver.find_element_by_id("passcode")

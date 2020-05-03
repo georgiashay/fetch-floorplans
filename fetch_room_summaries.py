@@ -10,7 +10,7 @@ from selenium.common.exceptions import TimeoutException
 from login_with_duo import login_to_page
 
 SCRIPT_LOCATION = os.path.abspath('')
-DATA_FOLDER = os.path.join(SCRIPT_LOCATION, 'rooms/')
+DATA_FOLDER = os.path.join(SCRIPT_LOCATION, 'rooms2/')
 
 LIST_URL="https://floorplans.mit.edu/cgi-bin-db-mit/wdbmitscript.asp?Report=ibrl&Item=MIT"
 HOME_URL="https://floorplans.mit.edu/mit-room.html"
